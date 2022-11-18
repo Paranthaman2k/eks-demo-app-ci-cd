@@ -1,11 +1,18 @@
-const express = require('express')
-const app = express()
-const port = 9000
+name: Docker Image CI
 
-app.get('/', (req, res) => {
-  res.send('Hello World! - welcome to icu program -porur')
-})
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
